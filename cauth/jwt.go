@@ -3,10 +3,10 @@ package cauth
 import (
 	"fmt"
 	"context"
-	"this/db"
 	"net/http"
-	"github.com/unectio/util"
+	"github.com/unectio/db"
 	"github.com/unectio/api"
+	"github.com/unectio/util"
 	"github.com/dgrijalva/jwt-go"
 )
 

@@ -3,9 +3,9 @@ package cauth
 import (
 	"errors"
 	"context"
-	"this/db"
 	"net/http"
 	"gopkg.in/mgo.v2/bson"
+	"github.com/unectio/db"
 )
 
 type AuthMethod interface {

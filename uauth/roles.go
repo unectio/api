@@ -3,7 +3,7 @@ package uauth
 import (
 	"time"
 	"errors"
-	"this/db"
+	"github.com/unectio/db"
 	"github.com/unectio/util"
 )
 
