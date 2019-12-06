@@ -28,6 +28,10 @@ const (
 	 */
 	RoleCapAccFnCode
 	/*
+	 * Access function (and other) logs
+	 */
+	RoleCapAccLogs
+	/*
 	 * Claim any project to work on, even if no explicit role
 	 * configured for it
 	 */
@@ -70,6 +74,7 @@ var capNames = map[string]uint {
 	"CapRouterDomain":	RoleCapRouterDomain,
 	"CapAccEverythig":	RoleCapAccEverything,
 	"CapAccFunctionCode":	RoleCapAccFnCode,
+	"CapAccLogs":		RoleCapAccLogs,
 }
 
 type Role struct {
