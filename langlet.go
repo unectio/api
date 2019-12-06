@@ -111,6 +111,7 @@ type RunRequest struct {
  * - Res      -- an encoded message from Main's 1st return
  * - Status   -- if provided by Main's 2nd return
  * - DeferMs  -- the same
+ * - Chain    -- the same
  *
  * The watchdog is setting the rest
  * - Out, Err -- stdio streams
@@ -118,12 +119,22 @@ type RunRequest struct {
  */
 
 type RunResponse struct {
-	Status		int		`json:"status"`
-	Res		json.RawMessage	`json:"res"`
-	Out		string		`json:"out"`
-	Err		string		`json:"err"`
-	LatUs		uint		`json:"lat_us"`
-	DeferMs		uint		`json:"defer_ms,omitempty"`
+	Status	int			`json:"status"`
+	Res	json.RawMessage		`json:"res"`
+	Out	string			`json:"out"`
+	Err	string			`json:"err"`
+	LatUs	uint			`json:"lat_us"`
+
+	DeferMs	uint			`json:"defer_ms,omitempty"`
+	Chain	*ChainResponse		`json:"chain,omitempty"`
+}
+
+/*
+ * Chain responce -- what the function wants us to call next
+ */
+type ChainResponse struct {
+	Target	string			`json:"target"`
+	Args	map[string]string	`json:"args"`
 }
 
 func (resp *RunResponse)Defer() time.Duration {
