@@ -82,6 +82,10 @@ type FuncLimitsImage struct {
 	Class		string			`json:"class,omitempty"        yaml:"class,omitempty"`
 }
 
+type FuncTargetImage struct {
+	Id		ObjectId		`json:"id"                     yaml:"id"`
+}
+
 type FuncTriggerImage struct {
 	CommonImage				`json:",inline"                yaml:",inline"`
 
