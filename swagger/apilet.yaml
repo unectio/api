@@ -1,0 +1,1517 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: apilet api
+basePath: /v1
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /projects:
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+    get:
+      tags:
+        - projects
+      summary: List projects accessible by caller
+      parameters:
+        - name: after
+          in: query
+          type: string
+          description: ID since which to list (sorted)
+        - name: limit
+          in: query
+          type: integer
+          description: Number of entries to show
+        - name: tag
+          in: query
+          type: string
+          description: Filter by tag
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Project'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+  '/projects/{pid}':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: pid
+        in: path
+        type: string
+        required: true
+        description: Project ID
+    get:
+      tags:
+        - projects
+      summary: Show project info
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Project'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+          
+  '/projects/{pid}/stats':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: pid
+        in: path
+        type: string
+        required: true
+        description: Project ID
+    get:
+      tags:
+        - projects
+      summary: Show project stats (for billing)
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ProjectStats'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+
+  /functions:
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+    get:
+      tags:
+        - functions
+      summary: List functions
+      parameters: 
+        - name: limit
+          in: query
+          required: false
+          description: Number of entries to report
+          type: integer
+        - name: after
+          in: query
+          required: false
+          description: ID of function after which to continue
+          type: string
+        - name: tag
+          in: query
+          required: false
+          description: Tag to filter
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Function'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    post:
+      tags:
+        - functions
+      summary: Create a new function
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Function'
+      responses:
+        '201':
+          description: OK
+          schema:
+            $ref: '#/definitions/Function'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  '/functions/{fnid}':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: fnid
+        in: path
+        type: string
+        required: true
+        description: Function ID
+    get:
+      tags:
+        - functions
+      summary: Show function info
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Function'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    delete:
+      tags:
+        - functions
+      summary: Remove a function
+      responses:
+        '204':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+        
+  '/functions/{fnid}/env':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: fnid
+        in: path
+        type: string
+        required: true
+        description: Function ID
+    get:
+      tags:
+        - functions
+      summary: Show function environment variables
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    put:
+      tags:
+        - functions
+      summary: Define function environment variables
+      parameters:
+        - name: data
+          in: body
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  '/functions/{fnid}/limits':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: fnid
+        in: path
+        type: string
+        required: true
+        description: Function ID
+    get:
+      tags:
+        - functions
+      summary: Show function limits
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Limits'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    put:
+      tags:
+        - functions
+      summary: Define function limits
+      parameters:
+        - name: data
+          in: body
+          schema:
+            $ref: '#/definitions/Limits'
+          required: true
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  '/functions/{fnid}/stats':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: fnid
+        in: path
+        type: string
+        required: true
+        description: Function ID
+    get:
+      tags:
+        - functions
+      summary: Show function statistics
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/FunctionStats'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+          
+  '/functions/{fnid}/logs':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: fnid
+        in: path
+        type: string
+        required: true
+        description: Function ID
+    get:
+      tags:
+        - functions
+      summary: Show function logs
+      parameters: 
+        - name: for
+          in: query
+          type: string
+          description: For what time till now
+          required: true
+        - name: as
+          in: query
+          type: string
+          description: Type of logs to download
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/FunctionLog'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+          
+  '/functions/{fnid}/code':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: fnid
+        in: path
+        type: string
+        required: true
+        description: Function ID
+    get:
+      tags:
+        - functions
+      summary: Show function code versions
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Code'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    post:
+      tags:
+        - functions
+      summary: Create new function version
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Code'
+      responses:
+        '201':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  '/functions/{fnid}/code/{ver}':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: fnid
+        in: path
+        type: string
+        required: true
+        description: Function ID
+      - name: ver
+        in: path
+        type: string
+        required: true
+        description: Code version
+    get:
+      tags:
+        - functions
+      summary: Show particular version code
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Code'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+        '404':
+          description: No version found
+    put:
+      tags:
+        - functions
+      summary: Update the code sources
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Code'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Code'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    delete:
+      tags:
+        - functions
+      summary: Remove particular version of code
+      responses:
+        '204':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+        '404':
+          description: No version found
+
+  '/functions/{fnid}/code/{ver}/run':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: fnid
+        in: path
+        type: string
+        required: true
+        description: Function ID
+      - name: ver
+        in: path
+        type: string
+        required: true
+        description: Function code version
+    post:
+      tags:
+        - functions
+      summary: Run function
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/FunctionRun'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/RunResponse'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  '/functions/{fnid}/triggers':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: fnid
+        in: path
+        type: string
+        required: true
+        description: Function ID
+    get:
+      tags:
+        - triggers
+      summary: Show function triggers
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Trigger'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    post:
+      tags:
+        - triggers
+      summary: Create new function trigger
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Trigger'
+      responses:
+        '201':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  '/functions/{fnid}/triggers/{tgid}':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: fnid
+        in: path
+        type: string
+        required: true
+        description: Function ID
+      - name: tgid
+        in: path
+        type: string
+        required: true
+        description: Trigger ID
+    get:
+      tags:
+        - triggers
+      summary: Show particular trigger
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Trigger'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+        '404':
+          description: No version found
+    put:
+      tags:
+        - triggers
+      summary: Update trigger
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Trigger'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Trigger'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    delete:
+      tags:
+        - triggers
+      summary: Remove trigger
+      responses:
+        '204':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+        '404':
+          description: No version found
+
+
+
+  '/functions/{fnid}/wait':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: fnid
+        in: path
+        type: string
+        required: true
+        description: Function ID
+    post:
+      tags:
+        - functions
+      summary: Wait for a condition on function
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/FunctionWait'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/RunResponse'
+        '410':
+          description: Function was removed while waiting
+        '408':
+          description: Timout while no condition
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  /routers:
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+    get:
+      tags:
+        - routers
+      summary: List routers
+      parameters: 
+        - name: limit
+          in: query
+          required: false
+          description: Number of entries to report
+          type: integer
+        - name: after
+          in: query
+          required: false
+          description: ID of router after which to continue
+          type: string
+        - name: tag
+          in: query
+          required: false
+          description: Tag to filter
+          type: string
+
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Router'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    post:
+      tags:
+        - routers
+      summary: Create a new router
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Router'
+      responses:
+        '201':
+          description: OK
+          schema:
+            $ref: '#/definitions/Router'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  '/routers/{rtid}':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: rtid
+        in: path
+        type: string
+        required: true
+        description: Router ID
+    get:
+      tags:
+        - routers
+      summary: Show router info
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Router'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    delete:
+      tags:
+        - routers
+      summary: Remove a router
+      responses:
+        '204':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  '/routers/{rtid}/mux':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: rtid
+        in: path
+        type: string
+        required: true
+        description: Router ID
+    get:
+      tags:
+        - routers
+      summary: Get router table
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RouterTable'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    put:
+      tags:
+        - routers
+      summary: Set router table
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RouterTable'
+      responses:
+        '201':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RouterTable'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  /auths:
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+    get:
+      tags:
+        - auths
+      summary: List auth methods
+      parameters: 
+        - name: limit
+          in: query
+          required: false
+          description: Number of entries to report
+          type: integer
+        - name: after
+          in: query
+          required: false
+          description: ID of auth method after which to continue
+          type: string
+        - name: tag
+          in: query
+          required: false
+          description: Tag to filter
+          type: string
+
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AuthMethod'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    post:
+      tags:
+        - auths
+      summary: Create a new auth method
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AuthMethod'
+      responses:
+        '201':
+          description: OK
+          schema:
+            $ref: '#/definitions/AuthMethod'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  '/auths/{auid}':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: auid
+        in: path
+        type: string
+        required: true
+        description: Auth method ID
+    get:
+      tags:
+        - auths
+      summary: Show auth method info
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AuthMethod'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    put:
+      tags:
+        - auths
+      summary: Update the auth method
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AuthMethod'
+      responses:
+        '201':
+          description: OK
+          schema:
+            $ref: '#/definitions/AuthMethod'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    delete:
+      tags:
+        - auths
+      summary: Remove an auth method
+      responses:
+        '204':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+  
+  /repositories:
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+    get:
+      tags:
+        - repos
+      summary: List repositories
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: Number of entries to report
+          type: integer
+        - name: after
+          in: query
+          required: false
+          description: ID of router after which to continue
+          type: string
+        - name: tag
+          in: query
+          required: false
+          description: Tag to filter
+          type: string
+
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Repository'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    post:
+      tags:
+        - repos
+      summary: Attach a new repo
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Repository'
+      responses:
+        '201':
+          description: OK
+          schema:
+            $ref: '#/definitions/Repository'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  '/repositories/{rpid}':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: rpid
+        in: path
+        type: string
+        required: true
+        description: Repo ID
+    get:
+      tags:
+        - repos
+      summary: Show repository info
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Repository'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    delete:
+      tags:
+        - repos
+      summary: Remove an repository
+      responses:
+        '204':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+  '/repositories/{rpid}/pull':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: rpid
+        in: path
+        type: string
+        required: true
+        description: Repo ID
+    post:
+      tags:
+        - repos
+      summary: Pull the repo now
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+  '/repositories/{rpid}/files':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: rpid
+        in: path
+        type: string
+        required: true
+        description: Repo ID
+      - name: as
+        in: query
+        type: string
+        required: false
+        description: 'One of: "list", "tree"'
+    get:
+      tags:
+        - repos
+      summary: List files in the repo
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/RepoFile'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+  '/repositories/{rpid}/files/{fpath}':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: rpid
+        in: path
+        type: string
+        required: true
+        description: Repo ID
+      - name: fpath
+        in: path
+        type: string
+        required: true
+    get:
+      tags:
+        - repos
+      summary: Get file contents
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+        
+  /secrets:
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+    get:
+      tags:
+        - secrets
+      summary: List secrets
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: Number of entries to report
+          type: integer
+        - name: after
+          in: query
+          required: false
+          description: ID of router after which to continue
+          type: string
+        - name: tag
+          in: query
+          required: false
+          description: Tag to filter
+          type: string
+
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Secret'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    post:
+      tags:
+        - secrets
+      summary: Create a new secret
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Secret'
+      responses:
+        '201':
+          description: OK
+          schema:
+            $ref: '#/definitions/Secret'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  '/secrets/{secid}':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: secid
+        in: path
+        type: string
+        required: true
+        description: Repo ID
+    get:
+      tags:
+        - secrets
+      summary: Show secret info
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Secret'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    put:
+      tags:
+        - secrets
+      summary: Update secret data
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Secret'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Secret'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    delete:
+      tags:
+        - secrets
+      summary: Remove an secret
+      responses:
+        '204':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+  
+definitions:
+  Project:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+  ProjectStats:
+    properties:
+      calls:
+        type: integer
+      runtime_us:
+        type: integer
+        
+  Function:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      state:
+        type: string
+      ready:
+        type: array
+        items:
+          type: string
+      env:
+        type: object
+        additionalProperties:
+          type: string
+      userdata:
+        type: string
+      limits:
+        $ref: '#/definitions/Limits'
+
+  Limits:
+    properties:
+      tmo_msec:
+        type: integer
+      burst:
+        type: integer
+      rate:
+        type: integer
+
+  FunctionStats:
+    properties:
+      calls:
+        type: integer
+      runtime_us:
+        type: integer
+      lastcall:
+        type: string
+  FunctionLog:
+    properties:
+      type:
+        type: string
+      event:
+        type: string
+      text:
+        type: string
+
+  Source:
+    properties:
+      id:
+        type: string
+        description: The version itself
+      lang:
+        type: string
+      text_base64:
+        type: string
+      url:
+        type: string
+      repo:
+        type: string
+      path:
+        type: string
+      sync:
+        type: boolean
+
+  FunctionRun:
+    properties:
+      run:
+        $ref: '#/definitions/RunRequest'
+      code:
+        $ref: '#/definitions/Source'
+
+  Code:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      state:
+        type: string
+      generation:
+        type: integer
+      source:
+        $ref: '#/definitions/Source'
+      userdata:
+        type: string
+        
+  RunRequest:
+    properties:
+      key:
+        type: string
+        description: Random value
+      method:
+        type: string
+        description: HTTP method
+      path:
+        type: string
+        description: URL sub-path
+      claims:
+        type: object
+        description: Authorization info
+      args:
+        type: object
+        additionalProperties:
+          type: string
+        description: Query parameters
+      content-type:
+        type: string
+      body:
+        type: string
+        description: Base64-encoded body
+  RunResponse:
+    properties:
+      status:
+        type: integer
+      res:
+        type: string
+        description: Base64-encoded body
+      out:
+        type: string
+        description: Stdout
+      err:
+        type: string
+        description: Stderr
+      lat_us:
+        type: integer
+        description: Execution time
+  FunctionWait:
+    properties:
+      tmo_msec:
+        type: integer
+      event:
+        type: string
+        description: What to wait
+        
+  Router:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      auth:
+        type: string
+        description: ID of auth method
+      url:
+        type: string
+        description: URL under which the router is seen
+      userdata:
+        type: string
+      mux:
+        type: array
+        items:
+          $ref: '#/definitions/RouterTable'
+  RouterTable:
+    properties:
+      methods:
+        type: string
+        description: Comma-separated list
+      path:
+        type: string
+      key:
+        type: string
+      function:
+        type: string
+        description: Function ID
+        
+  AuthMethod:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      userdata:
+        type: string
+      jwt:
+        $ref: '#/definitions/AuthMethodJWT'
+  AuthMethodJWT:
+    properties:
+      key:
+        type: string
+        
+  Repository:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      type:
+        type: string
+      url:
+        type: string
+      head:
+        type: string
+        description: Commit at the head
+      synced_at:
+        type: string
+      sync_minutes:
+        type: integer
+      userdata:
+        type: string
+        
+  RepoFile:
+    properties:
+      type:
+        type: string
+      name:
+        type: string
+      path:
+        type: string
+      kids:
+        type: array
+        items:
+          $ref: '#/definitions/RepoFile'
+
+  Secret:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      payload:
+        type: object
+        additionalProperties:
+          type: string
+      userdata:
+        type: string
+
+  Trigger:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      key:
+        type: string
+        description: Key for function invocation
+      sort:
+        type: string
+        description: Field by which triggers are sorted before executing
+      userdata:
+        type: string
+      url:
+        $ref: '#/definitions/TriggerURL'
+      cron:
+        $ref: '#/definitions/TriggerCron'
+      websock:
+        $ref: '#/definitions/TriggerWebsock'
+      event:
+        $ref: '#/definitions/TriggerEvent'
+        
+  TriggerURL:
+    properties:
+      url:
+        type: string
+        description: URL to invoke the trigger at
+      auth:
+        type: string
+        description: ID of AuthMethod to authenticate the call with
+        
+  TriggerCron:
+    properties:
+      tab:
+        type: string
+        description: CronTab string
+      args:
+        type: object
+        description: Arguments for function invocation
+        
+  TriggerWebsock:
+    properties:
+      websock:
+        type: string
+        description: ID of a websocket mware to get messages from
+
+  TriggerEvent:
+    properties:
+      srource:
+        type: string
+        description: ID of an event source to get events from
