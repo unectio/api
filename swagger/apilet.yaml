@@ -1302,6 +1302,9 @@ definitions:
         type: string
       generation:
         type: integer
+      weight:
+        type: integer
+	description: Code weight used in "rr" function call balancing
       source:
         $ref: '#/definitions/Source'
       userdata:

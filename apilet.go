@@ -83,6 +83,7 @@ type CodeImage struct {
 
 	Gen		int			`json:"generation"             yaml:"-"`
 	State		string			`json:"state"                  yaml:"-"`
+	Weight		int			`json:"weight"                 yaml:"-"`
 
 	Lang		string			`json:"lang"                   yaml:"lang"`
 	Source		*SourceImage		`json:"source,omitempty"       yaml:"source"`
