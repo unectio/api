@@ -34,3 +34,5 @@ import (
 var FnEnvironment	= &client.Property{"env", Functions}
 var FnLogs		= &client.Property{"logs", Functions}
 var FnStats		= &client.Property{"stats", Functions}
+
+var RtMux		= &client.Property{"mux", Routers}
