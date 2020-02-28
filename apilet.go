@@ -76,6 +76,7 @@ type FunctionImage struct {
 
 	Limits		*FuncLimitsImage	`json:"limits,omitempty"       yaml:"limits,omitempty"`
 	Env		[]string		`json:"env,omitempty"          yaml:"env,omitempty"`
+	CodeBalancer	string			`json:"code_balancer,omitempty yaml:"code_balancer,omitempty"`
 }
 
 type CodeImage struct {

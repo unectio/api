@@ -51,6 +51,18 @@ const (
 	FnDescFile	= "desc.yaml"
 )
 
+const (
+	RRCodeBalancer	= "rr"
+)
+
+func DefaultCodeBalancer(cb string) string {
+	if cb == "" {
+		return RRCodeBalancer
+	} else {
+		return cb
+	}
+}
+
 type FunctionDesc struct {
 	Gen		int		`json:"gen"`
 	TmoMs		int		`json:"timeout_ms"`
