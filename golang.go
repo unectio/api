@@ -7,23 +7,22 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-package main
+package api
 
 import (
 	"time"
-	"github.com/unectio/api"
 )
 
 
 type Request struct {
-	api.RunRequest			`json:",inline"`
+	RunRequest			`json:",inline"`
 
 	/*
 	 * If the request content-type is application/json, then
 	 * the body will be auto-unmarshalled and provided into
-	 * the Main() via this pointer
+	 * the Main() via this pointer (cast it to *Body)
 	 */
-	B	*Body			`json:"-"`
+	B	interface{}		`json:"-"`
 }
 
 type Response struct {
