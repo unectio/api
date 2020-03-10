@@ -97,6 +97,100 @@ paths:
         '403':
           description: Bad auth token
 
+  /packages/{lang}/list:
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: lang
+        in: path
+        description: Language
+        required: true
+        type: string
+    get:
+      tags:
+        - packages
+      summary: List packages (for given programming language) installed in current project
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Package'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    post:
+      tags:
+        - packages
+      summary: Install a new package
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Package'
+      responses:
+        '201':
+          description: OK
+          schema:
+            $ref: '#/definitions/Package'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  /packages/{lang}/list/{package}:
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: lang
+        in: path
+        description: Language
+        required: true
+        type: string
+      - name: package
+        in: path
+        description: Package name
+        required: true
+        type: string
+    get:
+      tags:
+        - packages
+      summary: Get info about a package
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Package'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    delete:
+      tags:
+        - packages
+      summary: Remove the package
+      responses:
+        '204':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+
+ 
+          
 
   /functions:
     parameters: 
@@ -1304,7 +1398,7 @@ definitions:
         type: integer
       weight:
         type: integer
-	description: Code weight used in "rr" function call balancing
+        description: Code weight used in "rr" function call balancing
       source:
         $ref: '#/definitions/Source'
       userdata:
@@ -1518,3 +1612,12 @@ definitions:
       srource:
         type: string
         description: ID of an event source to get events from
+
+  Package:
+    properties:
+      name:
+        type: string
+        description: Name (and ID) of the package
+      version:
+        type: string
+        description: Package version (in package-manager format)
