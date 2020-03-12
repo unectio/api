@@ -36,6 +36,8 @@ var AuthMethods		= &client.Collection{"auths", nil}
 var Repos		= &client.Collection{"repositories", nil}
 var Routers		= &client.Collection{"routers", nil}
 var Secrets		= &client.Collection{"secrets", nil}
+var Packages		= &client.Collection{"packages", nil}
 
 var FnCodes		= &client.Collection{"code", Functions}
 var FnTriggers		= &client.Collection{"triggers", Functions}
+var PkgLists		= &client.Collection{"list", Packages}
