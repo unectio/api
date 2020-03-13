@@ -261,6 +261,7 @@ type SecretImage struct {
 	CommonImage				`json:",inline"`
 
 	Payload		map[string]string	`json:"payload"`
+	Reveal		string			`json:"reveal,omitempty"`
 }
 
 type WebsockImage struct {
