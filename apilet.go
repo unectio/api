@@ -40,6 +40,7 @@ type LangImage struct {
 
 
 type PkgImage struct {
+	Id		ObjectId		`json:"id"`
 	Name		string			`json:"name"`
 	Version		string			`json:"version"`
 }

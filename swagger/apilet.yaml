@@ -1561,7 +1561,7 @@ definitions:
         type: string
       reveal:
         type: string
-	description: What information about secrets to show in GET calls. "no" means nothing, "keys" mean show back keys, "hash" means show first 8 letters of the sha256 sum of the value, "prefix" means show half, but not more than 8 bytes, from the secret value itself
+        description: What information about secrets to show in GET calls. "no" means nothing, "keys" mean show back keys, "hash" means show first 8 letters of the sha256 sum of the value, "prefix" means show half, but not more than 8 bytes, from the secret value itself
 
   Trigger:
     properties:
@@ -1618,6 +1618,9 @@ definitions:
 
   Package:
     properties:
+      id:
+        type: string
+        description: A pseudo-ID which is a base64-encoded package name
       name:
         type: string
         description: Name (and ID) of the package
