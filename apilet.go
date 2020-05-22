@@ -115,12 +115,17 @@ type FuncLimitsImage struct {
 type FuncTargetImage struct {
 	CommonImage				`json:",inline"                yaml:",inline"`
 	Fn		*NextFunctionImage	`json:"function,omitempty"     yaml:"function,omitempty"`
+	Rest		*NextRestImage		`json:"rest,omitempty"         yaml:"rest,omitempty"`
 	Success		ObjectId		`json:"on_success"             yaml:"on_success"`
 	Failure		ObjectId		`json:"on_failure"             yaml:"on_failure"`
 }
 
 type NextFunctionImage struct {
 	Id		ObjectId		`json:"id"                     yaml:"id"`
+}
+
+type NextRestImage struct {
+	URL		string			`json:"url"                    yaml:"url"`
 }
 
 type FuncTriggerImage struct {
