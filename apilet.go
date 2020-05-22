@@ -113,7 +113,7 @@ type FuncLimitsImage struct {
 }
 
 type FuncTargetImage struct {
-	Id		ObjectId		`json:"id"                     yaml:"id"`
+	CommonImage				`json:",inline"                yaml:",inline"`
 }
 
 type FuncTriggerImage struct {
