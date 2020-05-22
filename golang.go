@@ -38,4 +38,16 @@ type Response struct {
 	 * values.
 	 */
 	Defer	time.Duration
+	/*
+	 * Setting this field continues the chain to the goven target
+	 */
+	Next	*RunNext
+}
+
+/*
+ * Next target -- what the function wants us to call next
+ */
+type RunNext struct {
+	Target	string			`json:"target"`
+	Args	map[string]string	`json:"args"`
 }

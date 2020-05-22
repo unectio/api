@@ -103,15 +103,7 @@ type RunResponse struct {
 	LatUs	uint			`json:"lat_us"`
 
 	DeferMs	uint			`json:"defer_ms,omitempty"`
-	Chain	*ChainResponse		`json:"chain,omitempty"`
-}
-
-/*
- * Chain responce -- what the function wants us to call next
- */
-type ChainResponse struct {
-	Target	string			`json:"target"`
-	Args	map[string]string	`json:"args"`
+	Next	*RunNext		`json:"next,omitempty"`
 }
 
 func (resp *RunResponse)Defer() time.Duration {
