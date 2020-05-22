@@ -699,6 +699,117 @@ paths:
         '404':
           description: No version found
 
+  '/functions/{fnid}/targets':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: fnid
+        in: path
+        type: string
+        required: true
+        description: Function ID
+    get:
+      tags:
+        - targets
+      summary: Show function targets
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Target'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    post:
+      tags:
+        - targets
+      summary: Create new function target
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Target'
+      responses:
+        '201':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+
+  '/functions/{fnid}/targets/{tgid}':
+    parameters: 
+      - name: X-Auth-Token
+        in: header
+        type: string
+        description: Authorization token
+        required: true
+      - name: fnid
+        in: path
+        type: string
+        required: true
+        description: Function ID
+      - name: tgid
+        in: path
+        type: string
+        required: true
+        description: Trigger ID
+    get:
+      tags:
+        - targets
+      summary: Show particular target
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Target'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+        '404':
+          description: No version found
+    put:
+      tags:
+        - targets
+      summary: Update target
+      parameters: 
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Target'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Target'
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+    delete:
+      tags:
+        - targets
+      summary: Remove target
+      responses:
+        '204':
+          description: OK
+        '401':
+          description: Not authorized
+        '403':
+          description: Bad auth token
+        '404':
+          description: No version found
+
+
 
 
   '/functions/{fnid}/wait':
@@ -1585,7 +1696,7 @@ definitions:
         $ref: '#/definitions/TriggerWebsock'
       event:
         $ref: '#/definitions/TriggerEvent'
-        
+
   TriggerURL:
     properties:
       url:
@@ -1615,6 +1726,23 @@ definitions:
       srource:
         type: string
         description: ID of an event source to get events from
+
+  Target:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      userdata:
+        type: string
+      function:
+        $ref: '#/definitions/TargetFunction'
+
+  TargetFunction:
+    properties:
+      id:
+        type: string
+        description: Function ID
 
   Package:
     properties:
