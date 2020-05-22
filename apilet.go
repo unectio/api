@@ -114,6 +114,11 @@ type FuncLimitsImage struct {
 
 type FuncTargetImage struct {
 	CommonImage				`json:",inline"                yaml:",inline"`
+	Fn		*NextFunctionImage	`json:"function,omitempty"     yaml:"function,omitempty"`
+}
+
+type NextFunctionImage struct {
+	Id		ObjectId		`json:"id"                     yaml:"id"`
 }
 
 type FuncTriggerImage struct {
