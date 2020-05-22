@@ -1737,6 +1737,12 @@ definitions:
         type: string
       function:
         $ref: '#/definitions/TargetFunction'
+      on_success:
+        type: string
+        description: Function to call on success
+      on_failure:
+        type: string
+        description: Function to call on error
 
   TargetFunction:
     properties:
