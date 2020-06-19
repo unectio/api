@@ -115,7 +115,17 @@ func (r *Role)Can(w uint) bool {
 
 var roles  = make(map[string]*Role)
 
-func GetRole(name string) *Role { return roles[name] }
+func GetRole(name string) *Role {
+	r, ok := roles[name]
+	if !ok {
+		r = &Role {
+			Name:	x_roleNobody,
+			Caps:	util.NewEmptyBitmask(),
+		}
+	}
+	return r
+}
+
 func Admin() *Role { return GetRole(x_roleAdmin) }
 func Nobody() string { return x_roleNobody }
 
