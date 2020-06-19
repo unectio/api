@@ -97,7 +97,7 @@ var CapNames = map[string]uint {
 	"CapSharedRepos":	RoleCapSharedRepos,
 	"CapBreakRates":	RoleCapBreakRates,
 	"CapRouterDomain":	RoleCapRouterDomain,
-	"CapAccEverythig":	RoleCapAccEverything,
+	"CapAccEverything":	RoleCapAccEverything,
 	"CapAccFunctionCode":	RoleCapAccFnCode,
 	"CapAccLogs":		RoleCapAccLogs,
 }
