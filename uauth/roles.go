@@ -29,8 +29,6 @@ package uauth
 
 import (
 	"time"
-	"errors"
-	"github.com/unectio/db"
 	"github.com/unectio/util"
 )
 
@@ -90,7 +88,7 @@ const (
 	RoleCapRouterDomain
 )
 
-var capNames = map[string]uint {
+var CapNames = map[string]uint {
 	"CapModify":		RoleCapModify,
 	"CapAnyProject":	RoleCapAnyProject,
 	"CapUserManagement":	RoleCapUserManagement,
@@ -115,6 +113,8 @@ func (r *Role)Can(w uint) bool {
 
 var roles  = make(map[string]*Role)
 
+func SetRoles(r map[string]*Role) { roles = r }
+
 func GetRole(name string) *Role {
 	r, ok := roles[name]
 	if !ok {
@@ -128,40 +128,3 @@ func GetRole(name string) *Role {
 
 func Admin() *Role { return GetRole(x_roleAdmin) }
 func Nobody() string { return x_roleNobody }
-
-func LoadRoleCaps(c *db.CapsDb) error {
-	if _, ok := roles[c.Role]; ok {
-		return errors.New("duplicate entry")
-	}
-
-	caps, err := parseCaps(c.Caps)
-	if err != nil {
-		return err
-	}
-
-	roles[c.Role] = &Role{
-		Name:	c.Role,
-		Caps:	caps,
-	}
-
-	return nil
-}
-
-func parseCaps(caps []string) (*util.Bitmask, error) {
-	if len(caps) == 1 && caps[0] == "*" {
-		return util.NewFullBitmask(), nil
-	}
-
-	ret := util.NewEmptyBitmask()
-
-	for _, c := range caps {
-		n, ok := capNames[c]
-		if !ok {
-			return nil, errors.New("no such cap " + c)
-		}
-
-		ret.Set(n)
-	}
-
-	return ret, nil
-}
