@@ -37,6 +37,7 @@ const (
 	x_roleNobody string	= "faas.nobody"
 
 	SelfKeyLifetime time.Duration = 60 * time.Second
+	MaxTimerDesync time.Duration = 30 * time.Second
 )
 
 const (

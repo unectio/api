@@ -91,7 +91,7 @@ func (claims *Claims)setupSelfSigned(ctx context.Context, rc *rawClaims, key *db
 	}
 
 	if rc.StandardClaims.ExpiresAt == 0 ||
-			rc.StandardClaims.ExpiresAt > time.Now().Add(SelfKeyLifetime).Unix() {
+			rc.StandardClaims.ExpiresAt > time.Now().Add(SelfKeyLifetime + MaxTimerDesync).Unix() {
 		return errors.New("Too long-living key")
 	}
 
