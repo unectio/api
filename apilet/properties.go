@@ -31,8 +31,8 @@ import (
 	"github.com/unectio/util/restmux/client"
 )
 
-var FnEnvironment	= &client.Property{"env", Functions}
-var FnLogs		= &client.Property{"logs", Functions}
-var FnStats		= &client.Property{"stats", Functions}
+var FnEnvironment = &client.Property{Name: "env", Col: Functions}
+var FnLogs = &client.Property{Name: "logs", Col: Functions}
+var FnStats = &client.Property{Name: "stats", Col: Functions}
 
-var RtMux		= &client.Property{"mux", Routers}
+var RtMux = &client.Property{Name: "mux", Col: Routers}

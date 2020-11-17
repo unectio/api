@@ -13,16 +13,15 @@ import (
 	"time"
 )
 
-
 type Request struct {
-	RunRequest			`json:",inline"`
+	RunRequest `json:",inline"`
 
 	/*
 	 * If the request content-type is application/json, then
 	 * the body will be auto-unmarshalled and provided into
 	 * the Main() via this pointer (cast it to *Body)
 	 */
-	B	interface{}		`json:"-"`
+	B interface{} `json:"-"`
 }
 
 type Response struct {
@@ -31,23 +30,23 @@ type Response struct {
 	 * response status. If you want to change it, set the needed
 	 * value here.
 	 */
-	Status	int
+	Status int
 	/*
 	 * Setting this will make the event to be called again on the
 	 * function after the specified duration with the same req
 	 * values.
 	 */
-	Defer	time.Duration
+	Defer time.Duration
 	/*
 	 * Setting this field continues the chain to the goven target
 	 */
-	Next	*RunNext
+	Next *RunNext
 }
 
 /*
  * Next target -- what the function wants us to call next
  */
 type RunNext struct {
-	Target	string			`json:"target"`
-	Args	map[string]string	`json:"args"`
+	Target string            `json:"target"`
+	Args   map[string]string `json:"args"`
 }

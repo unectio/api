@@ -28,11 +28,12 @@
 package cauth
 
 import (
-	"errors"
 	"context"
+	"errors"
 	"net/http"
-	"gopkg.in/mgo.v2/bson"
+
 	"github.com/unectio/db"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type AuthMethod interface {
@@ -51,7 +52,7 @@ func AuthSetup(ctx context.Context, id bson.ObjectId) (AuthMethod, error) {
 
 	switch {
 	case am.JWT != nil:
-		ami = &jwtAuth{ *am.JWT}
+		ami = &jwtAuth{*am.JWT}
 	case am.Platform:
 		ami = &platformAuth{}
 	default:

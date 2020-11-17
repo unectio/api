@@ -31,15 +31,15 @@ import (
 	"github.com/unectio/util/restmux/client"
 )
 
-var Functions = &client.Collection{"functions", nil}
-var AuthMethods = &client.Collection{"auths", nil}
-var Repos = &client.Collection{"repositories", nil}
-var Routers = &client.Collection{"routers", nil}
-var Secrets = &client.Collection{"secrets", nil}
-var Packages = &client.Collection{"packages", nil}
-var Projects = &client.Collection{"projects", nil}
+var Functions = &client.Collection{Name: "functions", Parent: nil}
+var AuthMethods = &client.Collection{Name: "auths", Parent: nil}
+var Repos = &client.Collection{Name: "repositories", Parent: nil}
+var Routers = &client.Collection{Name: "routers", Parent: nil}
+var Secrets = &client.Collection{Name: "secrets", Parent: nil}
+var Packages = &client.Collection{Name: "packages", Parent: nil}
+var Projects = &client.Collection{Name: "projects", Parent: nil}
 
-var FnCodes = &client.Collection{"code", Functions}
-var FnTriggers = &client.Collection{"triggers", Functions}
-var PkgLists = &client.Collection{"list", Packages}
-var RepoFiles = &client.Collection{"files", Repos}
+var FnCodes = &client.Collection{Name: "code", Parent: Functions}
+var FnTriggers = &client.Collection{Name: "triggers", Parent: Functions}
+var PkgLists = &client.Collection{Name: "list", Parent: Packages}
+var RepoFiles = &client.Collection{Name: "files", Parent: Repos}

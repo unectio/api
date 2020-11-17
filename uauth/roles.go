@@ -29,15 +29,16 @@ package uauth
 
 import (
 	"time"
+
 	"github.com/unectio/util"
 )
 
 const (
-	x_roleAdmin string	= "faas.admin"
-	x_roleNobody string	= "faas.nobody"
+	x_roleAdmin  string = "faas.admin"
+	x_roleNobody string = "faas.nobody"
 
 	SelfKeyLifetime time.Duration = 60 * time.Second
-	MaxTimerDesync time.Duration = 30 * time.Second
+	MaxTimerDesync  time.Duration = 30 * time.Second
 )
 
 const (
@@ -89,43 +90,43 @@ const (
 	RoleCapRouterDomain
 )
 
-var CapNames = map[string]uint {
-	"CapModify":		RoleCapModify,
-	"CapAnyProject":	RoleCapAnyProject,
-	"CapUserManagement":	RoleCapUserManagement,
-	"CapPlatformRef":	RoleCapPlatformRef,
-	"CapSetTags":		RoleCapSetTags,
-	"CapSharedRepos":	RoleCapSharedRepos,
-	"CapBreakRates":	RoleCapBreakRates,
-	"CapRouterDomain":	RoleCapRouterDomain,
-	"CapAccEverything":	RoleCapAccEverything,
-	"CapAccFunctionCode":	RoleCapAccFnCode,
-	"CapAccLogs":		RoleCapAccLogs,
+var CapNames = map[string]uint{
+	"CapModify":          RoleCapModify,
+	"CapAnyProject":      RoleCapAnyProject,
+	"CapUserManagement":  RoleCapUserManagement,
+	"CapPlatformRef":     RoleCapPlatformRef,
+	"CapSetTags":         RoleCapSetTags,
+	"CapSharedRepos":     RoleCapSharedRepos,
+	"CapBreakRates":      RoleCapBreakRates,
+	"CapRouterDomain":    RoleCapRouterDomain,
+	"CapAccEverything":   RoleCapAccEverything,
+	"CapAccFunctionCode": RoleCapAccFnCode,
+	"CapAccLogs":         RoleCapAccLogs,
 }
 
 type Role struct {
-	Name	string
-	Caps	*util.Bitmask
+	Name string
+	Caps *util.Bitmask
 }
 
-func (r *Role)Can(w uint) bool {
+func (r *Role) Can(w uint) bool {
 	return r.Caps.Check(w)
 }
 
-var roles  = make(map[string]*Role)
+var roles = make(map[string]*Role)
 
 func SetRoles(r map[string]*Role) { roles = r }
 
 func GetRole(name string) *Role {
 	r, ok := roles[name]
 	if !ok {
-		r = &Role {
-			Name:	x_roleNobody,
-			Caps:	util.NewEmptyBitmask(),
+		r = &Role{
+			Name: x_roleNobody,
+			Caps: util.NewEmptyBitmask(),
 		}
 	}
 	return r
 }
 
-func Admin() *Role { return GetRole(x_roleAdmin) }
+func Admin() *Role   { return GetRole(x_roleAdmin) }
 func Nobody() string { return x_roleNobody }

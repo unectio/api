@@ -28,30 +28,31 @@
 package cauth
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 	"net/http"
-	"github.com/unectio/db"
-	"github.com/unectio/api"
-	"github.com/unectio/util"
+
 	"github.com/dgrijalva/jwt-go"
+	"github.com/unectio/api"
+	"github.com/unectio/db"
+	"github.com/unectio/util"
 )
 
 type jwtAuth struct {
 	db.AuthJWTDb
 }
 
-func (ja *jwtAuth)Verify(ctx context.Context, w http.ResponseWriter, r *http.Request) map[string]interface{} {
+func (ja *jwtAuth) Verify(ctx context.Context, w http.ResponseWriter, r *http.Request) map[string]interface{} {
 	h := r.Header.Get(api.AuthCommonHeader)
 	if h == "" {
-		http.Error(w, "Need " + api.AuthCommonHeader + " header", http.StatusUnauthorized)
+		http.Error(w, "Need "+api.AuthCommonHeader+" header", http.StatusUnauthorized)
 		return nil
 	}
 
 	return ja.verifyKey(ctx, h, w, r)
 }
 
-func (ja *jwtAuth)verifyKey(ctx context.Context, h string, w http.ResponseWriter, r *http.Request) map[string]interface{} {
+func (ja *jwtAuth) verifyKey(ctx context.Context, h string, w http.ResponseWriter, r *http.Request) map[string]interface{} {
 
 	token, ok := util.ParseBearer(h)
 	if !ok {
@@ -60,12 +61,12 @@ func (ja *jwtAuth)verifyKey(ctx context.Context, h string, w http.ResponseWriter
 	}
 
 	tok, err := jwt.ParseWithClaims(token, jwt.MapClaims{},
-			func(tok *jwt.Token) (interface{}, error) {
-				if _, ok := tok.Method.(*jwt.SigningMethodHMAC); !ok {
-					return nil, fmt.Errorf("Unexpected sign method: %v", tok.Header["alg"])
-				}
-				return ja.Key, nil
-			})
+		func(tok *jwt.Token) (interface{}, error) {
+			if _, ok := tok.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, fmt.Errorf("Unexpected sign method: %v", tok.Header["alg"])
+			}
+			return ja.Key, nil
+		})
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusForbidden)

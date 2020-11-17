@@ -28,26 +28,26 @@
 package api
 
 const (
-	CalletPrefix		= "call"
-	URLFunction		= rune('u')
-	URLRouter		= rune('r')
+	CalletPrefix = "call"
+	URLFunction  = rune('u')
+	URLRouter    = rune('r')
 
-	AuthCommonHeader	= "Authorization"
+	AuthCommonHeader = "Authorization"
 )
 
 type ComputeImage struct {
-	Cookie		string		`json:"cookie"`
+	Cookie string `json:"cookie"`
 }
 
 type DepReqImage struct {
-	Op		string		`json:"op"`
-	Dep		*DepDescImage	`json:"dep"`
+	Op  string        `json:"op"`
+	Dep *DepDescImage `json:"dep"`
 }
 
 type DepDescImage struct {
-	Proj		string		`json:"proj"`
-	Lang		string		`json:"lang"`
-	Class		string		`json:"class"`
+	Proj  string `json:"proj"`
+	Lang  string `json:"lang"`
+	Class string `json:"class"`
 }
 
 func ParseCalletURL(val string) (rune, string) {

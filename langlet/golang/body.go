@@ -9,4 +9,4 @@
 
 package main
 
-type Body map[string]interface{}
+type Body map[string]interface{} //nolint:unused,deadcode

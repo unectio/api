@@ -28,30 +28,31 @@
 package uauth
 
 import (
-	"time"
-	"errors"
 	"context"
+	"errors"
+	"time"
+
+	"github.com/dgrijalva/jwt-go"
 	"github.com/unectio/db"
 	"github.com/unectio/util/mongo"
 	"gopkg.in/mgo.v2/bson"
-	"github.com/dgrijalva/jwt-go"
 )
 
 type rawClaims struct {
 	*jwt.StandardClaims
-	ProjectId	string		`json:"projectid"`
-	RoleName	string		`json:"role"`
-	UserId		string		`json:"userid"`
+	ProjectId string `json:"projectid"`
+	RoleName  string `json:"role"`
+	UserId    string `json:"userid"`
 }
 
 type Claims struct {
-	User		bson.ObjectId
-	Project		bson.ObjectId	/* Can be empty, meaning the "default" project */
-	Role		*Role		/* Can be nil, meaning "roleNobody" FIXME */
-	Scope		*db.KeyScopeDb
+	User    bson.ObjectId
+	Project bson.ObjectId /* Can be empty, meaning the "default" project */
+	Role    *Role         /* Can be nil, meaning "roleNobody" FIXME */
+	Scope   *db.KeyScopeDb
 }
 
-func (c *rawClaims)project() (bson.ObjectId, bool) {
+func (c *rawClaims) project() (bson.ObjectId, bool) {
 	if c.ProjectId != "" && c.ProjectId != db.DefaultProjectId {
 		return mongo.ObjectId(c.ProjectId)
 	} else {
@@ -59,7 +60,7 @@ func (c *rawClaims)project() (bson.ObjectId, bool) {
 	}
 }
 
-func (claims *Claims)setupServerSigned(ctx context.Context, rc *rawClaims) error {
+func (claims *Claims) setupServerSigned(ctx context.Context, rc *rawClaims) error {
 	/*
 	 * Server (us) signed claims are fully trusted, but we still need the
 	 * type conversion.
@@ -81,7 +82,7 @@ func (claims *Claims)setupServerSigned(ctx context.Context, rc *rawClaims) error
 	return nil
 }
 
-func (claims *Claims)setupSelfSigned(ctx context.Context, rc *rawClaims, key *db.KeyDb) error {
+func (claims *Claims) setupSelfSigned(ctx context.Context, rc *rawClaims, key *db.KeyDb) error {
 	/*
 	 * Self-signed claims. In this case it can only claim the project
 	 * to work on and it must not be valid longer than several minutes.
@@ -91,7 +92,7 @@ func (claims *Claims)setupSelfSigned(ctx context.Context, rc *rawClaims, key *db
 	}
 
 	if rc.StandardClaims.ExpiresAt == 0 ||
-			rc.StandardClaims.ExpiresAt > time.Now().Add(SelfKeyLifetime + MaxTimerDesync).Unix() {
+		rc.StandardClaims.ExpiresAt > time.Now().Add(SelfKeyLifetime+MaxTimerDesync).Unix() {
 		return errors.New("Too long-living key")
 	}
 

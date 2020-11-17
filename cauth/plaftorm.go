@@ -30,16 +30,17 @@ package cauth
 import (
 	"context"
 	"net/http"
+
 	"github.com/unectio/api"
 	"github.com/unectio/api/uauth"
 )
 
-type platformAuth struct { }
+type platformAuth struct{}
 
-func (pa *platformAuth)Verify(ctx context.Context, w http.ResponseWriter, r *http.Request) map[string]interface{} {
+func (pa *platformAuth) Verify(ctx context.Context, w http.ResponseWriter, r *http.Request) map[string]interface{} {
 	h := r.Header.Get(api.AuthCommonHeader)
 	if h == "" {
-		http.Error(w, "Need " + api.AuthCommonHeader + " header", http.StatusUnauthorized)
+		http.Error(w, "Need "+api.AuthCommonHeader+" header", http.StatusUnauthorized)
 		return nil
 	}
 
@@ -49,11 +50,10 @@ func (pa *platformAuth)Verify(ctx context.Context, w http.ResponseWriter, r *htt
 		return nil
 	}
 
-	return map[string]interface{} {
-		"user":		claims.User.Hex(),
-		"project":	claims.Project.Hex(),
-		"role":		claims.Role.Name,
-		"token":	h,
+	return map[string]interface{}{
+		"user":    claims.User.Hex(),
+		"project": claims.Project.Hex(),
+		"role":    claims.Role.Name,
+		"token":   h,
 	}
 }
-

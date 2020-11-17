@@ -28,14 +28,15 @@
 package uauth
 
 import (
-	"fmt"
-	"errors"
 	"context"
+	"errors"
+	"fmt"
+
+	"github.com/dgrijalva/jwt-go"
 	"github.com/unectio/db"
 	"github.com/unectio/util"
-	"github.com/unectio/util/mongo"
 	sc "github.com/unectio/util/context"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/unectio/util/mongo"
 )
 
 func lookupSignKey(ctx context.Context, tok *jwt.Token) (*db.KeyDb, error) {
@@ -72,16 +73,16 @@ func DecodeToken(ctx context.Context, token string) *Claims {
 	var key *db.KeyDb
 
 	tok, err := jwt.ParseWithClaims(token, &rawClaims{},
-			func(tok *jwt.Token) (interface{}, error) {
-				var err error
+		func(tok *jwt.Token) (interface{}, error) {
+			var err error
 
-				key, err = lookupSignKey(ctx, tok)
-				if err != nil {
-					return nil, err
-				}
+			key, err = lookupSignKey(ctx, tok)
+			if err != nil {
+				return nil, err
+			}
 
-				return key.Value, nil
-			})
+			return key.Value, nil
+		})
 
 	if err != nil {
 		sc.L(ctx).Errorf("Error parsing token: %s\n", err.Error())

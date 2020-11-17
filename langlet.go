@@ -28,31 +28,31 @@
 package api
 
 import (
-	"time"
 	"encoding/json"
+	"time"
 )
 
 const (
-	EnvPrefix	= "LANGLET_"
-	EnvPodIp	= EnvPrefix + "POD_IP"
-	EnvPort		= EnvPrefix + "PORT"
-	EnvInstance	= EnvPrefix + "INSTANCE"
-	EnvVolume	= EnvPrefix + "VOLUME"
-	EnvProject	= EnvPrefix + "PROJECT"
-	EnvLang		= EnvPrefix + "FN_LANG"
-	EnvClass	= EnvPrefix + "CLASS"
-	EnvToken	= EnvPrefix + "TOKEN"
+	EnvPrefix   = "LANGLET_"
+	EnvPodIp    = EnvPrefix + "POD_IP"
+	EnvPort     = EnvPrefix + "PORT"
+	EnvInstance = EnvPrefix + "INSTANCE"
+	EnvVolume   = EnvPrefix + "VOLUME"
+	EnvProject  = EnvPrefix + "PROJECT"
+	EnvLang     = EnvPrefix + "FN_LANG"
+	EnvClass    = EnvPrefix + "CLASS"
+	EnvToken    = EnvPrefix + "TOKEN"
 )
 
 const (
-	VolSources	= "functions"
-	VolRepos	= "repos"
-	VolPackages	= "packages"
-	FnDescFile	= "desc.yaml"
+	VolSources  = "functions"
+	VolRepos    = "repos"
+	VolPackages = "packages"
+	FnDescFile  = "desc.yaml"
 )
 
 const (
-	RRCodeBalancer	= "rr"
+	RRCodeBalancer = "rr"
 )
 
 func DefaultCodeBalancer(cb string) string {
@@ -64,23 +64,23 @@ func DefaultCodeBalancer(cb string) string {
 }
 
 type FunctionDesc struct {
-	Gen		int		`json:"gen"`
-	TmoMs		int		`json:"timeout_ms"`
-	Env		[]string	`json:"env"`
+	Gen   int      `json:"gen"`
+	TmoMs int      `json:"timeout_ms"`
+	Env   []string `json:"env"`
 }
 
-func (d *FunctionDesc)Tmo() time.Duration {
+func (d *FunctionDesc) Tmo() time.Duration {
 	return time.Millisecond * time.Duration(d.TmoMs)
 }
 
 const (
-	CallProjectHeader	= "X-Target-ID"
-	CallURLPrefix		= "/call/"
-	CallGenParam		= "gen"
+	CallProjectHeader = "X-Target-ID"
+	CallURLPrefix     = "/call/"
+	CallGenParam      = "gen"
 
-	MethodCron		= "CRON"
-	MethodWebsocket		= "WEBSOCK"
-	MethodEvent		= "EVENT"
+	MethodCron      = "CRON"
+	MethodWebsocket = "WEBSOCK"
+	MethodEvent     = "EVENT"
 )
 
 /*
@@ -96,25 +96,25 @@ const (
  */
 
 type RunResponse struct {
-	Status	int			`json:"status"`
-	Res	json.RawMessage		`json:"res"`
-	Out	string			`json:"out"`
-	Err	string			`json:"err"`
-	LatUs	uint			`json:"lat_us"`
+	Status int             `json:"status"`
+	Res    json.RawMessage `json:"res"`
+	Out    string          `json:"out"`
+	Err    string          `json:"err"`
+	LatUs  uint            `json:"lat_us"`
 
-	DeferMs	uint			`json:"defer_ms,omitempty"`
-	Next	*RunNext		`json:"next,omitempty"`
+	DeferMs uint     `json:"defer_ms,omitempty"`
+	Next    *RunNext `json:"next,omitempty"`
 }
 
-func (resp *RunResponse)Defer() time.Duration {
+func (resp *RunResponse) Defer() time.Duration {
 	return time.Duration(resp.DeferMs) * time.Millisecond
 }
 
-func (resp *RunResponse)SetLat(since time.Time) {
+func (resp *RunResponse) SetLat(since time.Time) {
 	resp.LatUs = uint(time.Since(since) / time.Microsecond)
 }
 
-func (resp *RunResponse)GetLat() time.Duration {
+func (resp *RunResponse) GetLat() time.Duration {
 	return time.Duration(resp.LatUs) * time.Microsecond
 }
 

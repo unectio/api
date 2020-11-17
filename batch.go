@@ -32,6 +32,6 @@ import (
 )
 
 type SpecEntry struct {
-	Type		string			`yaml:"type"`
-	Spec		util.YAMLRaw		`yaml:"spec"`
+	Type string       `yaml:"type"`
+	Spec util.YAMLRaw `yaml:"spec"`
 }
